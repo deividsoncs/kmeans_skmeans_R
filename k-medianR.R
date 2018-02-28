@@ -2,7 +2,7 @@
 setwd(dir = "/home/calixto/Área de Trabalho/R/k-means/")
 # importo as libs
 library(skmeans) # used for k-medians algorithm ou Kmeans Esférico (Utiliza a Distância do Cosseno)
-install.packages("skmeans")
+#install.packages("skmeans")
 library(cluster) # required for calling the silhouette function
 library(dplyr) # an excellent tool for for summarizing, ordering and filtering data features
 
@@ -42,7 +42,18 @@ silhouette_k5 <- silhouette(partition)
 summary(silhouette_k5)  
 plot(silhouette_k5)
 
+#silhouette para 4 centróides
 partition_k4 <- skmeans(wineMatrix, 4)
 silhouette_k4 <- silhouette(partition_k4)
 plot(silhouette_k4) 
 summary(silhouette_k4)
+
+#Visualização da clusterização
+library(cluster)
+library(fpc)
+#install.packages("fpc")
+head(dadosT)
+# Análise do Kmeans e agrupamentos
+clus <- kmeans(dadosT, centers=4, iter.max = 500)
+# plotagem 
+plotcluster(dadosT, clus$cluster)

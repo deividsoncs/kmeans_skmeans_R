@@ -32,17 +32,6 @@ head(k$centers)
 #View(k$centers) #Mostra os centros dos clusters
 table(k$cluster) #conta os pontos de dados alocados em cada cluster
 
-#visualização dos clusters
-library(factoextra)
-install.packages("factoextra")
-fviz_cluster(k$centers, data = dadosT,
-             palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"), 
-             ellipse.type = "euclid", # Concentration ellipse
-             star.plot = TRUE, # Add segments from centroids to items
-             repel = TRUE, # Avoid label overplotting (slow)
-             ggtheme = theme_minimal()
-)
-
 #iteração para descobrir curva de acordo com o número de clusters
 rng<-2:20 #K w 2 até 20
 tries <-100 #Run the K Means algorithm 100 times
@@ -84,3 +73,25 @@ cluster_4_e
 cluster_5_e
 
 
+#Enhanced clustering analysis
+#Simplifica os passos a serem seguidos para uma clusterização, nem sempre demonstra as melhores distribuições
+#visualização dos clusters
+library(factoextra)
+
+res.km <- eclust(dadosT, "kmeans", nstart = 25)
+View(res.km)
+fviz_gap_stat(res.km$gap_stat)
+
+eclust(dadosT, FUNcluster = "kmeans", hc_metric = "euclidean")
+eclust(dadosT, FUNcluster = "clara", hc_metric = "minkowski")
+
+fviz_cluster(res.km, data = dadosT,
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"), 
+             ellipse.type = "euclid", # Concentration ellipse
+             star.plot = TRUE, # Add segments from centroids to items
+             repel = TRUE, # Avoid label overplotting (slow)
+             ggtheme = theme_minimal()
+)
+
+# Silhouette plot
+fviz_silhouette(res.km)
